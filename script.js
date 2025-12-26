@@ -138,12 +138,13 @@ function initBackToTop() {
 }
 
 /**
- * Image Modal/Lightbox
+ * Image Modal/Lightbox with Title and Description
  */
 function initImageModal() {
     const modal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
-    const modalCaption = document.getElementById('modalCaption');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
     const modalClose = document.getElementById('modalClose');
     const images = document.querySelectorAll('.section-image');
     
@@ -156,9 +157,17 @@ function initImageModal() {
             modalImage.src = img.src;
             modalImage.alt = img.alt;
             
-            // Get caption from sibling element or alt text
-            const caption = img.closest('.image-card, .gallery-item')?.querySelector('.image-caption');
-            modalCaption.textContent = caption ? caption.textContent : img.alt;
+            // Get title from data attribute or caption
+            const title = img.dataset.title || img.alt;
+            if (modalTitle) {
+                modalTitle.textContent = title;
+            }
+            
+            // Get description from data attribute
+            const description = img.dataset.description || '';
+            if (modalDescription) {
+                modalDescription.textContent = description;
+            }
             
             // Prevent body scroll when modal is open
             document.body.style.overflow = 'hidden';
