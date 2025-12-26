@@ -1,19 +1,11 @@
-/**
- * FMF Medical Education Website - JavaScript
- * Smooth scrolling, animations, and interactive features
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Scroll to top on page load
     window.scrollTo(0, 0);
     
-    // Also handle if page reloads with hash in URL
     if (window.location.hash) {
         window.location.hash = '';
         history.replaceState(null, null, window.location.pathname);
     }
     
-    // Initialize all features
     initScrollProgress();
     initNavigation();
     initScrollAnimations();
@@ -23,14 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScrollLinks();
 });
 
-// Force scroll to top on beforeunload (for browser back/forward)
 window.addEventListener('beforeunload', () => {
     window.scrollTo(0, 0);
 });
 
-/**
- * Scroll Progress Indicator
- */
 function initScrollProgress() {
     const progressBar = document.getElementById('scrollProgress');
     
@@ -44,15 +32,11 @@ function initScrollProgress() {
     }, { passive: true });
 }
 
-/**
- * Navigation Functionality
- */
 function initNavigation() {
     const navbar = document.getElementById('navbar');
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
     
-    // Navbar scroll effect
     if (navbar) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -63,7 +47,6 @@ function initNavigation() {
         }, { passive: true });
     }
     
-    // Mobile menu toggle
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
             navToggle.classList.toggle('active');
@@ -72,20 +55,16 @@ function initNavigation() {
     }
 }
 
-/**
- * Smooth Scroll for All Links
- */
 function initSmoothScrollLinks() {
     const navLinks = document.querySelectorAll('.nav-link, .next-section-btn, .hero-cta');
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
-    const navbarHeight = 80; // Fixed navbar height
+    const navbarHeight = 80;
     
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
             
-            // Only handle internal anchor links
             if (href && href.startsWith('#')) {
                 e.preventDefault();
                 
@@ -93,17 +72,14 @@ function initSmoothScrollLinks() {
                 const targetElement = document.querySelector(targetId);
                 
                 if (targetElement) {
-                    // Close mobile menu if open
                     if (navToggle && navMenu) {
                         navToggle.classList.remove('active');
                         navMenu.classList.remove('active');
                     }
                     
-                    // Calculate accurate scroll position
                     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
                     const offsetPosition = targetPosition - navbarHeight;
                     
-                    // Smooth scroll with precise positioning
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
@@ -114,9 +90,6 @@ function initSmoothScrollLinks() {
     });
 }
 
-/**
- * Scroll Animations with Intersection Observer
- */
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     
@@ -132,8 +105,6 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optionally unobserve after animation
-                // observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -143,15 +114,11 @@ function initScrollAnimations() {
     });
 }
 
-/**
- * Back to Top Button
- */
 function initBackToTop() {
     const backToTopBtn = document.getElementById('backToTop');
     
     if (!backToTopBtn) return;
     
-    // Show/hide button based on scroll position
     window.addEventListener('scroll', () => {
         if (window.scrollY > 500) {
             backToTopBtn.classList.add('visible');
@@ -160,7 +127,6 @@ function initBackToTop() {
         }
     }, { passive: true });
     
-    // Scroll to top on click
     backToTopBtn.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
@@ -169,9 +135,6 @@ function initBackToTop() {
     });
 }
 
-/**
- * Image Modal/Lightbox with Title and Description
- */
 function initImageModal() {
     const modal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
@@ -182,43 +145,36 @@ function initImageModal() {
     
     if (!modal || !modalImage || !images.length) return;
     
-    // Open modal on image click
     images.forEach(img => {
         img.addEventListener('click', () => {
             modal.classList.add('active');
             modalImage.src = img.src;
             modalImage.alt = img.alt;
             
-            // Get title from data attribute or caption
             const title = img.dataset.title || img.alt;
             if (modalTitle) {
                 modalTitle.textContent = title;
             }
             
-            // Get description from data attribute
             const description = img.dataset.description || '';
             if (modalDescription) {
                 modalDescription.textContent = description;
             }
             
-            // Prevent body scroll when modal is open
             document.body.style.overflow = 'hidden';
         });
     });
     
-    // Close modal on close button click
     if (modalClose) {
         modalClose.addEventListener('click', closeModal);
     }
     
-    // Close modal on background click
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModal();
         }
     });
     
-    // Close modal on escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('active')) {
             closeModal();
@@ -231,9 +187,6 @@ function initImageModal() {
     }
 }
 
-/**
- * Active Navigation Link Highlighting
- */
 function initActiveNavHighlight() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -266,9 +219,6 @@ function initActiveNavHighlight() {
     });
 }
 
-/**
- * Utility: Debounce function for performance
- */
 function debounce(func, wait = 10, immediate = true) {
     let timeout;
     return function executedFunction() {
@@ -285,9 +235,6 @@ function debounce(func, wait = 10, immediate = true) {
     };
 }
 
-/**
- * Utility: Throttle function for scroll events
- */
 function throttle(func, limit) {
     let inThrottle;
     return function executedFunction() {
